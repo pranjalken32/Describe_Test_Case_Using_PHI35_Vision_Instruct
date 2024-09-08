@@ -33,15 +33,13 @@ def upload_image_to_blob(blob_service_client, container_name, image):
     blob_name = image.filename
     blob_client = container_client.get_blob_client(blob_name)
 
-    # Set content type based on file extension
+    
     content_type = "image/jpeg" if blob_name.endswith(".jpg") or blob_name.endswith(".jpeg") else "image/png"
 
-    # Upload the image 
     blob_client.upload_blob(image, overwrite=True, content_settings=ContentSettings(content_type=content_type))
 
     return blob_client.url
 
-# Function to call Azure API for image description
 def get_image_description(image_url, context=""):
     system_message = SystemMessage(content="You are an AI assistant that generates detailed step-by-step testing instructions based on images provided.")
     
@@ -88,7 +86,6 @@ def index():
             # Store the result for each image
             all_responses.append(f"Result for {image.filename}:\n{response}\n")
         
-        # Join all responses into a single string and render them
         final_response = "\n".join(all_responses)
         
         return render_template("index.html", response=final_response)
